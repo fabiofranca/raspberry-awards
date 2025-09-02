@@ -27,21 +27,22 @@ public class MovieService {
     private final CsvMapper<Movie, MovieCsvRegistry> mapper;
     private final MovieRepository movieRepository;
 
-    public List<Movie> findAll(){
-        return movieRepository.findAll();
-    }
-
     public List<Movie> truncateAndSaveNewData(byte[] csvBytes) throws InvalidCSVFormatException {
         List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
         List<Movie> movies = fromCsvToMovies(movieCsvRegistries);
         Assert.notEmpty(movies, "Movies list cannot be null");
         movieRepository.deleteAll();
-        List<Movie> movies1 = movieRepository.saveAll(movies);
-
-        return movies1;
+        return movieRepository.saveAll(movies);
     }
 
-    public List<Award> findAllLongestIntervalBetweenWins(){
+    public void simpleSave(byte[] csvBytes) throws InvalidCSVFormatException {
+        List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
+        List<Movie> movies = fromCsvToMovies(movieCsvRegistries);
+        Assert.notEmpty(movies, "Movies list cannot be null");
+        movieRepository.saveAll(movies);
+    }
+
+    public List<Award> findAllLongestIntervalBetweenWins() {
         return movieRepository.findAllLongestIntervalBetweenWins();
     }
 
@@ -60,12 +61,12 @@ public class MovieService {
                 .withMappingStrategy(strategy)
                 .withSeparator(';')
                 .build();
-        try{
+        try {
             List<MovieCsvRegistry> movieCsvRegistries = moviesCsv.parse();
             Assert.notEmpty(movieCsvRegistries, "Movies csv cannot be null");
             IOUtils.closeQuietly(bais, reader);
             return movieCsvRegistries;
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
 
             throw new InvalidCSVFormatException(e.getCause());
         }
