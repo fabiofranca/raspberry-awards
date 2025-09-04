@@ -2,8 +2,11 @@ package raspberry.awards.api.mapper;
 
 import com.opencsv.bean.CsvBindAndSplitByName;
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvCustomBindByName;
 import lombok.*;
+import raspberry.awards.api.persistency.Producer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,8 +23,8 @@ public class MovieCsvRegistry {
     @CsvBindByName(required = true)
     private String studios;
 
-    @CsvBindAndSplitByName(elementType = String.class, required = true, splitOn = ",")
+    @CsvCustomBindByName(converter = ProducersConverter.class)
     private List<String> producers;
-    @CsvBindByName(required = false)
+    @CsvBindByName
     private String winner;
 }

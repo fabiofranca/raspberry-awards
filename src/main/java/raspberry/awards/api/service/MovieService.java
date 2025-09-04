@@ -27,12 +27,12 @@ public class MovieService {
     private final CsvMapper<Movie, MovieCsvRegistry> mapper;
     private final MovieRepository movieRepository;
 
-    public List<Movie> truncateAndSaveNewData(byte[] csvBytes) throws InvalidCSVFormatException {
+    public void truncateAndSaveNewData(byte[] csvBytes) throws InvalidCSVFormatException {
         List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
         List<Movie> movies = fromCsvToMovies(movieCsvRegistries);
         Assert.notEmpty(movies, "Movies list cannot be null");
         movieRepository.deleteAll();
-        return movieRepository.saveAll(movies);
+        movieRepository.saveAll(movies);
     }
 
     public void simpleSave(byte[] csvBytes) throws InvalidCSVFormatException {
@@ -57,12 +57,12 @@ public class MovieService {
         InputStreamReader reader = new InputStreamReader(bais, StandardCharsets.UTF_8);
         HeaderColumnNameMappingStrategy<MovieCsvRegistry> strategy = new HeaderColumnNameMappingStrategy<>();
         strategy.setType(MovieCsvRegistry.class);
-        CsvToBean<MovieCsvRegistry> moviesCsv = new CsvToBeanBuilder<MovieCsvRegistry>(reader)
+        CsvToBean<MovieCsvRegistry> csvToBuilder = new CsvToBeanBuilder<MovieCsvRegistry>(reader)
                 .withMappingStrategy(strategy)
                 .withSeparator(';')
                 .build();
         try {
-            List<MovieCsvRegistry> movieCsvRegistries = moviesCsv.parse();
+            List<MovieCsvRegistry> movieCsvRegistries = csvToBuilder.parse();
             Assert.notEmpty(movieCsvRegistries, "Movies csv cannot be null");
             IOUtils.closeQuietly(bais, reader);
             return movieCsvRegistries;

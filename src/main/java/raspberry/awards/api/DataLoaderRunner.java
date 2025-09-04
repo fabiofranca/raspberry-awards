@@ -22,6 +22,7 @@ public class DataLoaderRunner {
 
     @EventListener(ApplicationReadyEvent.class)
     public void onReady(){
+        log.info("DataLoader running...");
 
         ClassPathResource csvResource = new ClassPathResource("data/movielist.csv");
         log.debug("Arquivo da lista de filmes carregado");
@@ -33,6 +34,8 @@ public class DataLoaderRunner {
             log.error("Erro ao salvar arquivo csv", e);
             throw new RuntimeException(e);
         }
+
+        log.info("DataLoader done!");
 
     }
 }
