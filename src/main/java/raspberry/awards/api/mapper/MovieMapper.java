@@ -5,6 +5,7 @@ import raspberry.awards.api.persistency.Movie;
 import raspberry.awards.api.persistency.Producer;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,10 +23,10 @@ public class MovieMapper implements CsvMapper<Movie, MovieCsvRegistry> {
                 .build();
     }
 
-    private List<Producer> producerStringToList(List<String> producersName) {
+    private Set<Producer> producerStringToList(List<String> producersName) {
         return producersName.stream()
                 .map(Producer::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     @Override

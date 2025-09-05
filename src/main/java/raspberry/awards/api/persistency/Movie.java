@@ -3,7 +3,7 @@ package raspberry.awards.api.persistency;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,13 +21,13 @@ public class Movie {
     private String title;
     private String studios;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "movie_producer",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "producer_id")
     )
-    private List<Producer> producers;
+    private Set<Producer> producers;
     private String winner;
 }
 

@@ -12,12 +12,15 @@ import raspberry.awards.api.mapper.CsvMapper;
 import raspberry.awards.api.mapper.MovieCsvRegistry;
 import raspberry.awards.api.persistency.Movie;
 import raspberry.awards.api.persistency.MovieRepository;
+import raspberry.awards.api.persistency.Producer;
+import raspberry.awards.api.persistency.ProducerRepository;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,7 @@ public class MovieService {
 
     private final CsvMapper<Movie, MovieCsvRegistry> mapper;
     private final MovieRepository movieRepository;
+    private final ProducerRepository producerRepository;
 
     public void truncateAndSaveNewData(byte[] csvBytes) throws InvalidCSVFormatException {
         List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
@@ -35,10 +39,23 @@ public class MovieService {
         movieRepository.saveAll(movies);
     }
 
-    public void simpleSave(byte[] csvBytes) throws InvalidCSVFormatException {
+    public void simpleAllMovies(byte[] csvBytes) throws InvalidCSVFormatException {
         List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
         List<Movie> movies = fromCsvToMovies(movieCsvRegistries);
         Assert.notEmpty(movies, "Movies list cannot be null");
+
+        for (Movie movie : movies) {
+            Set<Producer> producerSet = movie.getProducers().stream()
+                    .map(p ->
+                            producerRepository.findByNameIgnoreCase(p.getName())
+                            .orElseGet(() ->
+                                    producerRepository.save(new Producer(p.getName()))
+                            ))
+                    .collect(Collectors.toSet());
+
+            movie.setProducers(producerSet);
+        }
+
         movieRepository.saveAll(movies);
     }
 
