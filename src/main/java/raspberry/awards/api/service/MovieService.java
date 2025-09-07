@@ -10,17 +10,12 @@ import org.springframework.util.Assert;
 import raspberry.awards.api.InvalidCSVFormatException;
 import raspberry.awards.api.mapper.CsvMapper;
 import raspberry.awards.api.mapper.MovieCsvRegistry;
-import raspberry.awards.api.persistency.Movie;
-import raspberry.awards.api.persistency.MovieRepository;
-import raspberry.awards.api.persistency.Producer;
-import raspberry.awards.api.persistency.ProducerRepository;
+import raspberry.awards.api.persistency.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +34,7 @@ public class MovieService {
         movieRepository.saveAll(movies);
     }
 
-    public void simpleAllMovies(byte[] csvBytes) throws InvalidCSVFormatException {
+    public void saveAllMovies(byte[] csvBytes) throws InvalidCSVFormatException {
         List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
         List<Movie> movies = fromCsvToMovies(movieCsvRegistries);
         Assert.notEmpty(movies, "Movies list cannot be null");
@@ -59,8 +54,15 @@ public class MovieService {
         movieRepository.saveAll(movies);
     }
 
-    public List<Award> findAllLongestIntervalBetweenWins() {
-        return movieRepository.findAllLongestIntervalBetweenWins();
+    public TopWinnersDTO findAllGreatestAndQuicklyWinners(){
+        Set<WinnersDTO> allProducersWithMoreThanOneWin = producerRepository.findAllProducersWithMoreThanOneWin()
+                .get();
+        Set<WinnersDTO> allProducerWithLesserTimeBtWins = producerRepository.findAllProducerWithLesserTimeBtWins()
+                .get();
+        TopWinnersDTO dto = new TopWinnersDTO(
+                allProducersWithMoreThanOneWin,
+                allProducerWithLesserTimeBtWins);
+        return dto;
     }
 
     private List<Movie> fromCsvToMovies(List<MovieCsvRegistry> movieCsvRegistries) {

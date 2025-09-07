@@ -9,10 +9,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import raspberry.awards.api.service.Award;
+import raspberry.awards.api.persistency.TopWinnersDTO;
 import raspberry.awards.api.service.MovieService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
@@ -24,11 +22,11 @@ public class MovieController {
     @Operation(summary = "listar os produtores com maior intervalo entre os premios")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-            content = @Content(schema = @Schema(implementation = Award.class)))
+            content = @Content(schema = @Schema(implementation = TopWinnersDTO.class)))
     })
-    @GetMapping(path = "/longest-interval-between-wins")
-    public List<Award> getAllLongestIntervalBetweenWins(){
-        return movieService.findAllLongestIntervalBetweenWins();
+    @GetMapping(path = "/top-winners")
+    public TopWinnersDTO findTopWinners(){
+        return movieService.findAllGreatestAndQuicklyWinners();
     }
 
 }

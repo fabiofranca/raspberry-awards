@@ -28,7 +28,7 @@ public class DataLoaderRunner {
         log.debug("Arquivo da lista de filmes carregado");
 
         try(InputStream is = csvResource.getInputStream()){
-            movieService.simpleAllMovies(is.readAllBytes());
+            movieService.saveAllMovies(is.readAllBytes());
             log.debug("Banco populado");
         } catch (IOException | InvalidCSVFormatException e) {
             log.error("Erro ao salvar arquivo csv", e);
