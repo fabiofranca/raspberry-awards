@@ -11,6 +11,8 @@ import raspberry.awards.api.InvalidCSVFormatException;
 import raspberry.awards.api.mapper.CsvMapper;
 import raspberry.awards.api.mapper.MovieCsvRegistry;
 import raspberry.awards.api.persistency.*;
+import raspberry.awards.api.service.dto.TopWinnersDTO;
+import raspberry.awards.api.service.dto.WinnerDTO;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStreamReader;

@@ -2,6 +2,7 @@ package raspberry.awards.api.persistency;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import raspberry.awards.api.service.dto.WinnerDTO;
 
 import java.util.Optional;
 import java.util.Set;
