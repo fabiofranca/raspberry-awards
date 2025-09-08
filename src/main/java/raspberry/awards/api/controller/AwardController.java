@@ -13,9 +13,9 @@ import raspberry.awards.api.service.dto.TopWinnersDTO;
 import raspberry.awards.api.service.MovieService;
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/award")
 @AllArgsConstructor
-public class MovieController {
+public class AwardController {
 
     private MovieService movieService;
 
@@ -27,7 +27,7 @@ public class MovieController {
                 description = "CSV com formato inválido")
 
     })
-    @GetMapping(path = "/top-winners")
+    @GetMapping(path = "/min-max-gap-btw-wins")
     public TopWinnersDTO findTopWinners(){
         return movieService.findAllGreatestAndQuicklyWinners();
     }
