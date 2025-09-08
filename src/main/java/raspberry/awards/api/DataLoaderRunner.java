@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Component
-@Profile({"dev", "prod"})
 @RequiredArgsConstructor
 @Slf4j
 public class DataLoaderRunner {
