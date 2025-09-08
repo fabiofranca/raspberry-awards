@@ -3,7 +3,6 @@ package raspberry.awards.api.persistency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,7 +22,7 @@ public interface ProducerRepository extends JpaRepository<Producer, Long> {
             having count(1) > 1
             order by 2 desc
             """)
-    Optional<Set<WinnersDTO>> findAllProducersWithMoreThanOneWin();
+    Optional<Set<WinnerDTO>> findAllProducersWithMoreThanOneWin();
 
 
     @Query("""
@@ -50,5 +49,5 @@ public interface ProducerRepository extends JpaRepository<Producer, Long> {
             group by t1.releasedYear, t1.producerId
             order by 2
             """)
-    Optional<Set<WinnersDTO>> findAllProducerWithLesserTimeBtWins();
+    Optional<Set<WinnerDTO>> findAllProducerWithLesserAndLongTimeBtWins();
 }

@@ -1,9 +1,9 @@
 package raspberry.awards.api.persistency;
 
-import java.util.Set;
+import java.util.List;
 
 public record TopWinnersDTO(
-        Set<WinnersDTO> max,
-        Set<WinnersDTO> min
+        List<WinnerDTO> max,
+        List<WinnerDTO> min
 ) {
 }

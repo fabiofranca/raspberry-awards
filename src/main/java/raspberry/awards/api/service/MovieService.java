@@ -55,13 +55,20 @@ public class MovieService {
     }
 
     public TopWinnersDTO findAllGreatestAndQuicklyWinners(){
-        Set<WinnersDTO> allProducersWithMoreThanOneWin = producerRepository.findAllProducersWithMoreThanOneWin()
-                .get();
-        Set<WinnersDTO> allProducerWithLesserTimeBtWins = producerRepository.findAllProducerWithLesserTimeBtWins()
-                .get();
+        Set<WinnerDTO> allProducerWithLesserTimeBtWins = producerRepository.findAllProducerWithLesserAndLongTimeBtWins()
+                .orElse(new HashSet<>());
+
+        WinnerDTO minWinner = allProducerWithLesserTimeBtWins.stream()
+                .min(Comparator.comparing(WinnerDTO::intervalBetweenWins))
+                .orElse(new WinnerDTO(null, null, null, null));
+
+        WinnerDTO maxWinner = allProducerWithLesserTimeBtWins.stream()
+                .max(Comparator.comparing(WinnerDTO::intervalBetweenWins))
+                .orElse(new WinnerDTO(null, null, null, null));
+
         TopWinnersDTO dto = new TopWinnersDTO(
-                allProducersWithMoreThanOneWin,
-                allProducerWithLesserTimeBtWins);
+                List.of(minWinner),
+                List.of(maxWinner));
         return dto;
     }
 
