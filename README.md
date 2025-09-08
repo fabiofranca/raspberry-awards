@@ -34,20 +34,9 @@ Para parar a aplicação execute
 
 A aplicação executa o banco de dados H2 em memória, ou seja, os dados serão perdidos ao parar a aplicação
 
-Para acessar o console do banco use a url <http://localhost:8080/movies/h2-console/login.do>. Usuário/senha sa/sa
+Para acessar o console do banco use a url <http://localhost:8080/h2-console/login.do>. Usuário/senha sa/sa
 
 ## Acessando os endpoints
 
 As definições das requisições estão disponíveis no swagger do projeto em 
 <http://localhost:8080/swagger-ui/index.html>
-
-É necessário fazer o upload do arquivo de filmes para poder listar os vencedores.
-
-## Melhorias
-- melhorar a validação do csv, indicando os dados incorretos e propagando execeções específicas
-- Ajustar o get dos maiores vencedores para o formato solicitado.
-- Aplicar melhor o padrão RESTFull:
-  - utiliza spring-hateoas
-  - retornar os filmes criados 
-  - retornar o link de acesso a cada registro
-  - implementar os métodos faltantes na API (PUT, DELETE, GET)
