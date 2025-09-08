@@ -26,14 +26,6 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final ProducerRepository producerRepository;
 
-    public void truncateAndSaveNewData(byte[] csvBytes) throws InvalidCSVFormatException {
-        List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
-        List<Movie> movies = fromCsvToMovies(movieCsvRegistries);
-        Assert.notEmpty(movies, "Movies list cannot be null");
-        movieRepository.deleteAll();
-        movieRepository.saveAll(movies);
-    }
-
     public void saveAllMovies(byte[] csvBytes) throws InvalidCSVFormatException {
         List<MovieCsvRegistry> movieCsvRegistries = byteArrayToListMovies(csvBytes);
         List<Movie> movies = fromCsvToMovies(movieCsvRegistries);
